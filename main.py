@@ -22,6 +22,11 @@ def main() -> None:
         os.makedirs(directory, exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8", newline="\n") as handle:
         handle.write(text)
+    # Self-check: what landed on disk must be byte-identical to the entry.
+    with open(OUTPUT_PATH, "rb") as handle:
+        written = handle.read()
+    if written != text.encode("utf-8"):
+        raise ValueError("output differs from the entry text")
 
 
 if __name__ == "__main__":
